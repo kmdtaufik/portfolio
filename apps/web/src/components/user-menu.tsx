@@ -1,60 +1,55 @@
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { authClient } from "@/lib/auth-client";
 import { Button } from "./ui/button";
-import { Skeleton } from "./ui/skeleton";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Menu, HomeIcon } from "lucide-react";
 
-export default function UserMenu() {
-	const router = useRouter();
-	const { data: session, isPending } = authClient.useSession();
-
-	if (isPending) {
-		return <Skeleton className="h-9 w-24" />;
-	}
-
-	if (!session) {
-		return (
-			<Button variant="outline" asChild>
-				<Link href="/login">Sign In</Link>
-			</Button>
-		);
-	}
-
-	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button variant="outline">{session.user.name}</Button>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent className="bg-card">
-				<DropdownMenuLabel>My Account</DropdownMenuLabel>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem>{session.user.email}</DropdownMenuItem>
-				<DropdownMenuItem asChild>
-					<Button
-						variant="destructive"
-						className="w-full"
-						onClick={() => {
-							authClient.signOut({
-								fetchOptions: {
-									onSuccess: () => {
-										router.push("/");
-									},
-								},
-							});
-						}}
-					>
-						Sign Out
-					</Button>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
-	);
+export default function MobileMenu() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Menu className="size-5" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="bg-card w-56">
+        <DropdownMenuLabel>Quick Links</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/projects" className="flex items-center gap-2">
+            <div className="size-5">💼</div>
+            Projects
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2"
+          >
+            <div className="size-5">📄</div>
+            Experiences
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2"
+          >
+            <HomeIcon className="size-5" />
+            Home
+          </Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 }

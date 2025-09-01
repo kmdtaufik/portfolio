@@ -1,0 +1,9 @@
+model Project {
+    id          String   @id @map("_id")
+    title       String
+    description String
+    image       String
+    sourceUrl   String
+    liveUrl     String
+    tags        String[]
+}
